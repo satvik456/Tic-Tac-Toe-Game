@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIC TAC TOE Game</title>
+    <style>
+        table{
+            width: 450px;
+            height: 450px;
+            margin: 20px auto;
+            border: 3px solid black;
+           
+            border-collapse: collapse;
+            box-shadow: 4px 4px 8px gray;
+           
+            
+            
+        }
+        h1{
+            text-align: center;
+        }
+        tr{
+            width: 450px;
+            height: 150px;
+            border: 3px solid black;
+            border-collapse: collapse;
+           
+           
+        }
+        td{
+            width: 150px;
+            height: 150px;
+            border:3px solid black;
+            border-collapse: collapse;
+          
+            
+        }
+        img{
+            width: 120px;
+            height: 120px;
+            margin: 15px;
+            
+        }
+        #page{
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+      
+       
+    </style>
+
+    
+</head>
+<body id="page">
+    <h1>Tic Tac Toe</h1>
+    <audio id="sound" src="winner-bell-game-show-91932.mp3"></audio>
+    <button onclick="restartgame()">Reset Game</button>
+    <table>
+        <tr>
+            <td onclick="ontap(this,0)"></td>
+            <td onclick="ontap(this,1)"></td>
+            <td onclick="ontap(this,2)"></td>
+        </tr>
+        <tr>
+            <td onclick="ontap(this,3)"></td>
+            <td onclick="ontap(this,4)"></td>
+            <td onclick="ontap(this,5)"></td>
+        </tr>
+        <tr>
+            <td onclick="ontap(this,6)"></td>
+            <td onclick="ontap(this,7)"></td>
+            <td onclick="ontap(this,8)"></td>
+        </tr>
+    </table>
+</body>
+<script>
+    var turn=0;
+var state=[2,2,2,2,2,2,2,2,2];
+
+var gamestatus=1;
+var winposition=[
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
+]
+
+function ontap(e,i){
+//    alert(i);
+//     e.innerHTML="x";
+    if(state[i]==2 && gamestatus==1){
+         if(turn==0){
+        e.innerHTML="<img src='O.png'/>";
+        state[i]=0;
+        turn=1;
+      }
+      else if(turn==1){
+        e.innerHTML="<img src='cross.png'/>";
+        state[i]=1;
+        turn=0;  
+      }
+    }
+    var winner=checkwinner();
+    if(winner==0){
+        const msg=new SpeechSynthesisUtterance("  O Player won");
+        window.speechSynthesis.speak(msg);
+       
+        page.style.backgroundImage="url('cracker.gif')";
+        sound.play();
+        
+    }
+    else if(winner==1){
+        const msg=new SpeechSynthesisUtterance(" X Player won");
+        window.speechSynthesis.speak(msg);
+        
+        page.style.backgroundImage="url('cracker.gif')";
+        sound.play();
+    }
+    if(winner==2 && !state.includes(2)){
+        const msg=new SpeechSynthesisUtterance("Game Draw");
+        window.speechSynthesis.speak(msg);
+        gamestatus=0;
+        hint.innerHTML="Game Over";
+    }
+}
+function checkwinner(){
+    var winner=2;
+    for(x of winposition)
+    {
+        if(state[x[0]]==state[x[1]]  && state[x[1]]==state[x[2]] && state[x[0]]!=2){
+            winner=state[x[0]];
+            gamestatus=0;
+            break;
+        }
+    }
+    return winner;
+}
+function restartgame(){
+    window.location.reload();
+}
+</script>
+</html>
